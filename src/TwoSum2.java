@@ -8,6 +8,7 @@ public class TwoSum2 {
 
                 if (sum == target) {
                     // Tra ve 2 so tuong ung
+                    System.out.println(" Index: " + (left + 1) + ", " + (right + 1));
                     System.out.println(" Hai so do la: " + numbers[left] + " va " + numbers[right]);
                     System.out.println(" Target: " + target);
                     return;
