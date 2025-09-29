@@ -1,14 +1,15 @@
 import java.util.Scanner;
 
 public class CaculatorIncomeTax {
-    public static double calculateTax(double income) {
+    public static void calculateTax(double income) {
         if (income <= 0) {
-            return 0;
+            System.out.println("Khong phai nop thue");
+            return;
         }
 
-        // Các mốc thu nhập (triệu đồng)
+        // Moc thu nhap (trieu dong)
         double[] levels = {5, 10, 18, 32, 52, 80};
-        // Thuế suất tương ứng
+        // Ti le thue tuong ung tung moc
         double[] rates  = {0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35};
 
         double tax = 0;
@@ -16,31 +17,46 @@ public class CaculatorIncomeTax {
 
         for (int i = 0; i < levels.length; i++) {
             if (income > levels[i]) {
-                tax += (levels[i] - preLevel) * rates[i];
+                // Neu income lon hơn moc hien tai
+                double taxable = levels[i] - preLevel;   // phan thue phai chiu
+                double money = taxable * rates[i];       // so tien thue ơ bac tuong ung
+                tax += money;
+
+                System.out.println("Bậc " + (i+1) + " (" + preLevel + "-" + levels[i] + "): "
+                        + money + " triệu");
+
                 preLevel = levels[i];
             } else {
-                tax += (income - preLevel) * rates[i];
-                return tax;
+                // neu income nam trong bac hien tai
+                double taxable = income - preLevel;
+                double money = taxable * rates[i];
+                tax += money;
+
+                System.out.println("Bậc " + (i+1) + " (" + preLevel + "-" + income + "): "
+                        + money + " triệu");
+
+                System.out.println("Tổng thuế phải trả: " + tax + " triệu đồng");
+                return;
             }
         }
 
-        // Nếu thu nhập > 80 triệu (bậc 7)
-        tax += (income - preLevel) * rates[rates.length - 1];
+        // thu nhap tren 80 trieu
+        double taxable = income - preLevel;
+        double money = taxable * rates[rates.length - 1];
+        tax += money;
 
-        return tax;
+        System.out.println("Bậc 7 (" + preLevel + "+): " + money + " triệu");
+        System.out.println("Tổng thuế phải trả: " + tax + " triệu đồng");
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Thu nhập hàng năm (triệu đồng): ");
-        double income = sc.nextDouble(); //sc.nextDouble() dung de nhap so thuc va luu vao bien income
+        System.out.print("Nhập thu nhập hàng năm (triệu đồng): ");
+        double income = sc.nextDouble();
 
-        double tax = calculateTax(income);
-
-        System.out.println("Số thuế phải trả: " + tax + " triệu đồng");
+        calculateTax(income);
 
         sc.close();
     }
-
 }
